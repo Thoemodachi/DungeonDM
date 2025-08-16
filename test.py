@@ -14,9 +14,14 @@ def main():
             print("The adventure ends here. Farewell, brave adventurer!")
             break
 
-        response = campaign.play_turn(player_id, player_input)
+        # Get DM narration and scene audio
+        result = campaign.play_turn(player_id, player_input)
+        narration = result.get("narration")
+        scene_audio = result.get("scene_audio")
+
         print("\n--- Dungeon Master ---")
-        print(response)
+        print(narration)
+        # print(f"\n[Suggested audio for this scene: {scene_audio}]")
         print("\n(Type 'quit' to exit the adventure)\n")
 
 if __name__ == "__main__":
