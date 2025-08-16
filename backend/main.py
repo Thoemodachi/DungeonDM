@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from backend.player_api import PlayerDrivenCampaign
+from player_api import PlayerDrivenCampaign
 from fastapi.middleware.cors import CORSMiddleware
 
 origins = ["http://localhost:3000"]

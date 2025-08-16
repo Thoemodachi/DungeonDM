@@ -1,7 +1,7 @@
 import os
 import chromadb
-from .memory import add_event, get_recent_events
-from .llm_client import generate_response
+from memory import add_event, get_recent_events
+from llm_client import generate_response
 import openai
 import json
 import re
