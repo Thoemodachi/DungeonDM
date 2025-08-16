@@ -2,4 +2,5 @@ data/
 backend/__pycache__/
 backend/memory_logs/
 .env
+__pycache__/
 audio/
