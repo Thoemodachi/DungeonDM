@@ -78,7 +78,6 @@ class PlayerDrivenCampaign:
             return "dungeon_caves"
         return "relax_safe_inn"  # fallback
 
-
     def play_turn(self, player_id, player_input):
         """Generate DM narration and safely extract scene audio at the end."""
         recent_mem = get_recent_events(player_id, limit=20)
@@ -100,6 +99,7 @@ class PlayerDrivenCampaign:
             "After that question, output ONLY a JSON object with the key 'scene_audio', "
             "choosing the most suitable track from: dungeon_caves, magic_supernatural, exploration_travel, "
             "combat_danger, town_social, mystery_investigation, relax_safe_inn. "
+            "Do NOT invent other audio file names, only choose from the given audio files. "
             "Do NOT write any text after the JSON. "
             "Example format: {\"scene_audio\": \"combat_danger\"}"
         ]
