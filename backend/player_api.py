@@ -73,6 +73,7 @@ class PlayerDrivenCampaign:
             rule_guidance,
             "Encourage player creativity while making sure all actions respect D&D 5e rules. "
             "Do not force a linear story; let the player guide the adventure."
+            "Include dialogue from NPCs naturally to enrich the narrative and make interactions vivid."
         ]
         prompt = "\n\n".join([p for p in prompt_parts if p])
         prompt = truncate_text(prompt)
