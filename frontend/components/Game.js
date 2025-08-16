@@ -3,17 +3,14 @@ import { useState, useRef, useEffect } from 'react';
 import { audioController } from '../components/AudioController';
 import styles from '@/styles/Home.module.css';
 
+// Split narration into coherent chunks without breaking quotes
 function splitNarration(text, maxChars = 200) {
   const chunks = [];
   let currentChunk = '';
-
-  // Split by sentences but keep punctuation attached to quotes
   const sentences = text.match(/[^.!?]+[.!?]+["']?|.+$/g) || [];
 
   for (let sentence of sentences) {
-    // Trim spaces
     sentence = sentence.trim();
-
     if ((currentChunk + ' ' + sentence).length > maxChars) {
       if (currentChunk) chunks.push(currentChunk.trim());
       currentChunk = sentence;
@@ -21,11 +18,9 @@ function splitNarration(text, maxChars = 200) {
       currentChunk = currentChunk ? currentChunk + ' ' + sentence : sentence;
     }
   }
-
   if (currentChunk) chunks.push(currentChunk.trim());
   return chunks;
 }
-
 
 // Animate DM narration letter-by-letter
 async function addNarrationAnimated(setMessages, narration, setTyping) {
@@ -43,12 +38,11 @@ async function addNarrationAnimated(setMessages, narration, setTyping) {
         newMsgs[newMsgs.length - 1].text = displayedText;
         return newMsgs;
       });
-      await new Promise((r) => setTimeout(r, 50)); // slow typing
+      await new Promise((r) => setTimeout(r, 50)); // typing speed
     }
 
     await new Promise((r) => setTimeout(r, 1500)); // pause between chunks
   }
-
   setTyping(false);
 }
 
@@ -58,6 +52,7 @@ export function ChatGame() {
   const [playerId, setPlayerId] = useState(null);
   const [stage, setStage] = useState('askName');
   const [isTyping, setIsTyping] = useState(false);
+  const [sending, setSending] = useState(false);
   const historyRef = useRef(null);
 
   // Initial DM message
@@ -77,7 +72,8 @@ export function ChatGame() {
   }, [messages]);
 
   const sendNameAndStart = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || sending) return;
+    setSending(true);
     try {
       const res = await fetch('http://localhost:8000/start_game', {
         method: 'POST',
@@ -92,11 +88,14 @@ export function ChatGame() {
       await addNarrationAnimated(setMessages, data.narration, setIsTyping);
     } catch (err) {
       console.error(err);
+    } finally {
+      setSending(false);
     }
   };
 
   const sendTurn = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || sending) return;
+    setSending(true);
     const playerMessage = input;
     setMessages((msgs) => [...msgs, { role: 'player', text: playerMessage }]);
     setInput('');
@@ -111,6 +110,8 @@ export function ChatGame() {
       await addNarrationAnimated(setMessages, data.narration, setIsTyping);
     } catch (err) {
       console.error(err);
+    } finally {
+      setSending(false);
     }
   };
 
@@ -121,18 +122,22 @@ export function ChatGame() {
 
   return (
     <div className={styles.chatContainer}>
-      <div className={styles.chatHeader}>Chat Your Game</div>
+      <div className={styles.chatHeader}>DungeonDM</div>
       <div className={styles.chatHistory} ref={historyRef}>
         {messages.map((m, i) => (
           <div
             key={i}
             className={`${styles.message} ${m.role === 'dm' ? styles.dm : styles.user}`}
           >
+            <span className={styles.avatar}>
+              {m.role === 'dm' ? '📜' : '🧝'}
+            </span>
             <strong>{m.role === 'dm' ? 'DM' : 'You'}:</strong> {m.text}
           </div>
         ))}
         {isTyping && (
           <div className={`${styles.message} ${styles.dm}`}>
+            <span className={styles.avatar}>📜</span>
             <strong>DM:</strong> <em>is typing...</em>
           </div>
         )}
@@ -142,9 +147,9 @@ export function ChatGame() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={stage === 'askName' ? 'Enter your name...' : 'What do you do?'}
-          disabled={isTyping}
+          disabled={isTyping || sending}
         />
-        <button type="submit" disabled={isTyping}>➤</button>
+        <button type="submit" disabled={isTyping || sending}>➤</button>
       </form>
     </div>
   );

@@ -1,12 +1,21 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --desert-sand: #DED2AA;
+  --camel: #C7A26B;
+  --laurel-green: #A3CB8F;
+  --light-moss-green: #C0DEA9;
+  --light-taupe: #B3816E;
+  --background-gradient: linear-gradient(120deg, #C7A26B 0%, #E1B78C 100%);
+  --dm-gradient: linear-gradient(120deg, #A3CB8F 0%, #CDE3B0 100%);
 }
 
+/* Dark mode override if desired */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --desert-sand: #A9927D;
+    --camel: #B68655;
+    --laurel-green: #7FA97F;
+    --light-moss-green: #99B37C;
+    --light-taupe: #8B5E3C;
   }
 }
 

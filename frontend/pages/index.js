@@ -12,8 +12,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Chat Your Game</title>
-        <meta name="description" content="Interactive text adventure game" />
+        <title>DungeonDM</title>
+        <meta name="description" content="LLM Powered Roleplay Simulator" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

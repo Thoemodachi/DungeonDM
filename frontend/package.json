@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^2.1.1",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "@geist-ui/core": "^2.3.8",
     "next": "15.4.6",
     "react": "19.1.0",
