@@ -1,27 +1,30 @@
-# Use a Debian-based Node image
+# ---- Build stage ----
 FROM node:18-slim AS builder
 
 WORKDIR /app
 
-# Copy package.json and lockfile first for caching
+# Copy package files first (caching)
 COPY package.json package-lock.json ./
+
+# Install dependencies
 RUN npm install
 
 # Copy source code
 COPY . .
 
-# Build the Next.js app
+# Build Next.js app
 RUN npm run build
 
-# ---- Production image ----
+# ---- Production stage ----
 FROM node:18-slim
 
 WORKDIR /app
 
-# Copy only the built files + node_modules
+# Copy built app and node_modules from builder
 COPY --from=builder /app ./
 
+# Expose port for ECS/ALB
 EXPOSE 3000
 
-# Run production server
-CMD ["npm", "run", "start"]
+# Run Next.js production server
+CMD ["npm", "run", "dev"]

@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { audioController } from '../components/AudioController';
 import styles from '@/styles/Home.module.css';
+const BACKEND_URL = 'http://dungeondm-alb-435308553.ap-southeast-2.elb.amazonaws.com';
 
 // Split narration into coherent chunks without breaking quotes
 function splitNarration(text, maxChars = 200) {
@@ -75,7 +76,7 @@ export function ChatGame() {
     if (!input.trim() || sending) return;
     setSending(true);
     try {
-      const res = await fetch('http://localhost:8000/start_game', {
+      const res = await fetch(`${BACKEND_URL}/start_game`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: input }),
@@ -100,7 +101,7 @@ export function ChatGame() {
     setMessages((msgs) => [...msgs, { role: 'player', text: playerMessage }]);
     setInput('');
     try {
-      const res = await fetch('http://localhost:8000/play_turn', {
+      const res = await fetch(`${BACKEND_URL}/play_turn`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ player_id: playerId, input_text: playerMessage }),

@@ -3,3 +3,8 @@ backend/__pycache__/
 backend/memory_logs/
 .env
 __pycache__/
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/.terraform.tfstate
+terraform/.terraform.tfstate.backup
+aws/

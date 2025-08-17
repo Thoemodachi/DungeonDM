@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from player_api import PlayerDrivenCampaign
 from fastapi.middleware.cors import CORSMiddleware
 
-origins = ["http://localhost:3000"]
+origins = ["http://dungeondm-alb-435308553.ap-southeast-2.elb.amazonaws.com"]
 
 app = FastAPI()
 app.add_middleware(
@@ -43,3 +43,8 @@ def play_turn_endpoint(data: PlayerInput):
         "narration": result["narration"],
         "scene_audio": result["scene_audio"],
     }
+
+@app.get("/health")
+def health_check():
+    """Health check endpoint for ECS/ALB"""
+    return {"status": "ok"}
