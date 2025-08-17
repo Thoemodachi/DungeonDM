@@ -10,8 +10,7 @@ variable "project_name" {
 
 variable "openai_api_key" {
   type      = string
-  default = "PUT_API_HERE"
-  
+  default = "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"
 }
 
 variable "vpc_cidr" {
